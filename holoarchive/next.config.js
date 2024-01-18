@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
-
-module.exports = nextConfig
+module.exports = {
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "lumiere-a.akamaihd.net",
+          port: "",
+          pathname: "/v1/images/**",
+        },
+      ],
+    },
+  };

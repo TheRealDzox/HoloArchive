@@ -1,10 +1,10 @@
 "use client";
-import React from 'react'
+import React, { use } from 'react'
 import Navbar from '@/components/ui/navbar'
 import Footer from '@/components/ui/footer';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-
 
   return (
     <div>
