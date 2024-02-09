@@ -1,28 +1,62 @@
-'use client';
-import React, { useRef, useEffect } from 'react';
-import Image from 'next/image';
-import ScrollInto from 'react-scroll-into-view';
-import Navbar from '@/components/ui/navbar';
-import Footer from '@/components/ui/footer';
+"use client";
+import React, { useRef, useEffect } from "react";
+import Image from "next/image";
+import ScrollInto from "react-scroll-into-view";
+import Navbar from "@/components/ui/navbar";
+import Footer from "@/components/ui/footer";
 
 export default function Home() {
+
     const [output, setOutput] = React.useState<any[]>([]);
     const [inputValue, setInputValue] = React.useState<string>();
     const [selectValue, setSelectValue] = React.useState<string>();
+    const gonkSound = new Audio('https://audio.jukehost.co.uk/wELYoObobFQXPf7unwZ0fWtRFOf1Hysl');
+
+    function callFunctions() {
+        fetchCharacters();
+        checkGonk();
+    }
 
     function fetchCharacters() {
         const url = `https://starwars-databank-server.vercel.app/api/v1/${selectValue}/${addPercent()}`;
-
         fetch(url)
             .then((response) => response.json())
-            .then((output) => setOutput(output))
+            .then((output) => {
+                if (output.length !== 0) {
+                    setOutput(output);
+                }
+                return (
+                    <div role="alert" className="alert alert-error">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="stroke-current shrink-0 h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        <span>Error! Task failed successfully.</span>
+                    </div>
+                );
+            })
             .catch((error) => console.log(error));
     }
 
     function addPercent() {
-        return inputValue?.replace(' ', '%20');
+        return inputValue?.replace(" ", "%20");
     }
 
+    function checkGonk() {
+        if (addPercent() == "Gonk%20Droid") {
+            console.log("GONK");
+            gonkSound.play();
+            return;
+        }
+    }
     return (
         <div>
             <Navbar />
@@ -73,7 +107,7 @@ export default function Home() {
                     className="input input-bordered w-full max-w-xs"
                 />
                 <button
-                    onClick={fetchCharacters}
+                    onClick={callFunctions}
                     className="btn btn-primary ml-3 mb-10">
                     Search
                 </button>
